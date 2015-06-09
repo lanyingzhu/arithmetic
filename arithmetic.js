@@ -7,6 +7,7 @@ function getRandomInt(min, max) {
 function randomChoose(operators) {
   var index = Math.floor(Math.random() * operators.length);
   return operators[index];
+
 } // Get a operator.
 function Equation () {
   this.id = 0;
@@ -51,59 +52,59 @@ function Equation () {
     $("#oper" + this.id).html(this.oper);
   }
 
-}
+  this.Verify = function() {
 
-function Verify() {
-    for(i = 0; i < 10; i++) {
-      var total = +$("#answer" + i).val();//get the content of input.
-      var num1 = +$("#num1" + i ).html();
-      var num2 = +$("#num2" + i).html();
-      var oper = $("#oper" + i).html();
+    var total = +$("#answer" + this.id).val();//get the content of input.
 
-      switch(oper) {
-        case "+":
-          num_12 = num1 + num2;
-          break;
-        case "-":
-          num_12 = num1 - num2;
-          break;
-        case "*":
-          num_12 = num1 * num2;
-          break;
-        case "/":
-          num_12 = num1 / num2;
-          break;
-      }
-      if(total === num_12) {
-        $("#icon" + i).attr("src", "correct.png");
-      }
-      else {
-        $("#icon" + i).attr("src", "iconWrong.png");
-      }
+
+    switch(this.oper) {
+      case "+":
+        num_12 = this.num1 + this.num2;
+        break;
+      case "-":
+        num_12 = this.num1 - this.num2;
+        break;
+      case "*":
+        num_12 = this.num1 * this.num2;
+        break;
+      case "/":
+        num_12 = (this.num1 / this.num2).toFixed(2);
+        total = total.toFixed(2);
+        break;
     }
-}//comparison of correct and wrong.
+    if(total === num_12) {
+      $("#icon" + this.id).attr("src", "correct.png");
+    }
+    else {
+      $("#icon" + this.id).attr("src", "iconWrong.png");
+    }//comparison of correct and wrong.
 
-
-for(i=0; i < 10; i++) {
-    var equa = new Equation();
-    equa.id = i;
-    equa.generateQuestion();
-    equaErray = [];
-    equaErray.push(equa);
+  }
 }
 
 $(document).ready(function() {
+  equaArray = [];
+  for(i=0; i < 10; i++) {
+    var equa = new Equation();
+    equa.id = i;
+    equa.generateQuestion();
+    equaArray.push(equa);
+  } //write page.
 
   $("#submit").on("click", function(e) {
     e.preventDefault();
     //var total = +$("#answer").val();
     //var num12 = num1 + num2;
+
      //$("#icon").attr("src", "correct.png");
     //}
     //else {
      //$("#icon").attr("src", "iconWrong.png");
     //}
-     Verify();
+    for(i = 0; i < 10; i++) {
+      equaArray[i].Verify();
+
+    }
   })
 
 })
